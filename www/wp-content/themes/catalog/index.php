@@ -1,150 +1,85 @@
 ﻿<?php
 /**
- * Файл Index.php
+ * The main template file
  *
+ * This is the most generic template file in a WordPress theme and one
+ * of the two required files for a theme (the other being style.css).
+ * It is used to display a page when nothing more specific matches a query,
+ * e.g., it puts together the home page when no home.php file exists.
  *
- * Отображает страницы сайта, работающего на WordPress
- *
+ * @link http://codex.wordpress.org/Template_Hierarchy
+ *query_posts( 'posts_per_page=6' ); query_posts( 'paged=2' );
  * @package WordPress
- * @subpackage Simplest_Site
- * @since Simplest Site 1.0
+ * @subpackage Twenty_Fourteen
+ * @since Twenty Fourteen 1.0
  */
-?>
-<!DOCTYPE html>
-<!--[if IE 7]>
-<html class="ie ie7" <?php language_attributes(); ?>>
-<![endif]-->
-<!--[if IE 8]>
-<html class="ie ie8" <?php language_attributes(); ?>>
-<![endif]-->
-<!--[if !(IE 7) | !(IE 8) ]><!-->
-<html <?php language_attributes(); ?>>
-<!--<![endif]-->
-<head>
-    <meta charset="<?php bloginfo( 'charset' ); ?>">
-    <meta name="viewport" content="width=device-width">
-    <title><?php wp_title( '|', true, 'right' ); ?></title>
-    <link rel="profile" href="http://gmpg.org/xfn/11">
-    <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
-    <link rel='stylesheet' id='main-style'  href='<?php echo get_stylesheet_uri(); ?>' type='text/css' media='all' />
-    <?php wp_head(); ?>
-</head>
 
-<body <?php body_class(); ?>>
-<div id="page" class="hfeed site">
+get_header();  //query_posts( 'paged=3' ) ?>
 
-    <!-- Шапка -->
-    <header id="masthead" class="site-header" role="banner">
-        <!-- Название сайта -->
-        <h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
-        <div id="search-container">
-            <div class="search-box">
-                <?php get_search_form(); ?>
-            </div>
-        </div>
-        <!-- Меню -->
-        <nav id="primary-navigation" class="site-navigation" role="navigation">
-            <?php wp_nav_menu( array( 'theme_location' => 'primary', 'menu_class' => 'nav-menu' ) ); ?>
-        </nav>
-    </header><!-- #masthead -->
-    <div class="site-content"> 
-        <!-- Начало цикла WordPress -->
-        <?php if ( have_posts() ) : ?>
-            <?php while ( have_posts() ) : the_post(); ?>
-                <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-                    <?php if ( is_sticky() && is_home() && ! is_paged() ) : ?>
-                    <div class="featured-post">
-                        <?php _e( 'Избранная запись' ); ?>
-                    </div>
-                    <?php endif; ?>
-                    <header class="entry-header">
-                        <!-- Если это запись -->
-                        <?php if ( is_single() || is_sticky() ) : ?>
-                        <h1 class="entry-title"><?php the_title(); ?></h1>
-                        <?php else : ?>
-                        <h1 class="entry-title">
-                            <a href="<?php the_permalink(); ?>" rel="bookmark"><?php echo get_the_title(); ?></a>
-                        </h1>
-                        <?php endif; ?>
-                        
-                        <?php echo get_the_category_list(); ?>
-                        <?php echo get_the_tag_list('', ', ');?>
-                        
-                    </header><!-- .entry-header -->
+      <div class="row row-offcanvas row-offcanvas-right">
 
-                    <?php if ( is_search() ) : // Покаывать только краткое описание записи, если это результаты поиска?>
-                    <div class="entry-summary">
-                        <?php the_excerpt(); ?>
-                    </div><!-- .entry-summary -->
-                    <?php else : ?>
-                    <div class="entry-content">
-                        <?php the_content( __( 'Читатать дальше.. <span class="meta-nav">→</span>') ); ?>
-                        <?php wp_link_pages( array( 'before' => '<div class="page-links">' . __( 'Страницы:'), 'after' => '</div>' ) ); ?>
-                    </div><!-- .entry-content -->
-                    <?php endif; ?>
+        <div class="col-xs-12 col-sm-9">
+        <?php include"slider.php"; ?>
+<div class="row">
 
-                    <footer class="entry-meta">
+	<!-- Start the Loop. -->
+ 	<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
-                        <?php printf(
-                             __( 'Эта запись была опубликована %1$s автором %2$s.' ),
-                            esc_html( get_the_date() ),
-                            esc_html( get_the_author() )
-                        );	
-                        ?>
-                        <?php edit_post_link( __( 'Редактировать', '' ), '<span class="edit-link">', '</span>' ); ?>
-                        
-                    </footer><!-- .entry-meta -->
-                </article><!-- #post -->
-            <?php endwhile; ?>
-            <!-- Конец цикла WordPress -->
+ <!-- Далее проверяется, находится ли текущая запись в рубрике 3. -->
+ <!-- Если да, то блоку div, будет присвоен класс "post-cat-three". -->
+ <!-- Иначе, блоку div будет присвоен класс "post". -->
+	<div class="col-6 col-sm-6 col-lg-4">
+    
+<!-- Отобразить Заголовок как постоянную ссылку на Запись. -->
+		<div class="thumbnail">
+      
+ 			<?php the_post_thumbnail(); //вывод картинки?>
+			<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+    		<div class="caption">
+    			<?php $post_id = get_the_ID(); ?>
+        		<p><?php short_post($post_id);//вывод цитаты?><?php //the_excerpt_rss(); ?></p>
+         		<h3><p><a href="<?php the_permalink(); ?>" class="btn btn-primary" role="button">Подробно</a></p></h3>
+    		</div>
+ 	  	</div>
+	 </div>
 
-            <?php if ( $wp_query->max_num_pages > 1 ) : ?>
-                <nav id="nav-below">
-                    <div class="nav-previous"><?php next_posts_link( __( '<span class="meta-nav">←</span> Предыдущая запись') ); ?></div>
-                    <div class="nav-next"><?php previous_posts_link( __( 'следующая запись <span class="meta-nav">→</span>') ); ?></div>
-                </nav><!-- #nav-below .navigation -->
-            <?php endif; ?>
-            
-        <!-- Записей для отображения нет, тогда выводим сообщение об этом -->
-        <?php else : ?>
 
-            <article class="not-found">
 
-            <?php if ( current_user_can( 'edit_posts' ) ) : ?>
-                <header class="entry-header">
-                    <h1 class="entry-title"><?php _e( 'Нет записей для отображения.', '' ); ?></h1>
-                </header>
+ <!-- Остановить Цикл (но есть ключевое слово "else:" - смотрите далее). -->
+ <?php endwhile; else: ?>
 
-                <div class="entry-content">
-                    <p><?php printf( __( 'Готовы опубликовать свою первую запись? <a href="%s">Тогда перейдите по этой ссылке.</a>.'), admin_url( 'post-new.php' ) ); ?></p>
-                </div><!-- .entry-content -->
+ <!-- В первом "if" проверяется существуют ли каки-либо записи для  -->
+ <!-- вывода.  Эта часть "else", говорит что делать, если записей не нашлось.-->
+ <p>Sorry, no posts matched your criteria.</p>
 
-            <?php else : ?>
-                <header class="entry-header">
-                    <h1 class="entry-title"><?php _e( 'Ничего не найдено'); ?></h1>
-                </header>
+ <!-- ДЕЙСТВИТЕЛЬНО остановить Цикл -->
+  <?php endif; ?>
 
-                <div class="entry-content">
-                    <p><?php _e( 'Ничего не найдено, воспользуйтесь поиском.'); ?></p>
-                    <?php get_search_form(); ?>
-                </div><!-- .entry-content -->
-            <?php endif; ?>
+  </div><!--/row-->
+  </div><!--/span-->
 
-            </article><!--.not-found -->
+      </div><!--/row-->
+      <nav>
+  <ul class="pagination">
+    <li class="disabled"><a href="#"><span aria-hidden="false">&laquo;</span><span class="sr-only">Previous</span></a></li>
+    
+    <?php 
+    	$page_num = $wp_query->max_num_pages; 
+    	$p=get_pagenum_link();	
+    	for ($i=1;$i<=$page_num;$i++){
+			if(strip_tags($_GET['paged']) == $i ){
+    			echo '<li class="active"><a href="'.get_pagenum_link($i).'">'.$i. '<span class="sr-only">(current)</span></a></li>';
+    		}
+    		else{
+    		//if($_GET[paged])
+    			echo '<li class="disable"><a href="'.get_pagenum_link($i).'">'.$i. '<span class="sr-only">(current)</span></a></li>';
+    		}
+    	}
 
-        <?php endif; // конец have_posts() проверки ?>
+    ?>
+    <li><a href="#"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+  </ul>
+</nav>
 
-        </div><!-- .site-content -->
-        <div class="clear"></div>
-
-    <!-- Подвал сайта -->
-        <footer id="colophon" class="site-footer">
-            <div class="site-info">
-                <a href="<?php echo esc_url( __( 'http://wordpress.org/' ) ); ?>"><?php printf( __( 'Сайт работает на %s' ), 'WordPress' ); ?></a>
-            </div><!-- .site-info -->
-        </footer><!-- #colophon -->
-    </div><!-- #page -->
-
-    <?php wp_footer(); ?>
-</body>
-</html>
+<?php //echo get_pagenum_link(); ?>
+   <?php get_footer(); ?>

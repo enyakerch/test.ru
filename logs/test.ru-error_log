@@ -1,0 +1,4 @@
+[Sun Dec 07 19:33:27.433466 2014] [core:error] [pid 4192:tid 1556] (20024)The given path is misformatted or contained invalid characters: [client 127.0.0.1:61211] AH00127: Cannot map GET /... HTTP/1.1 to file, referer: http://www.test.ru/
+[Sun Dec 07 19:35:27.113389 2014] [core:error] [pid 4192:tid 1540] (20024)The given path is misformatted or contained invalid characters: [client 127.0.0.1:61253] AH00127: Cannot map GET /... HTTP/1.1 to file, referer: http://www.test.ru/
+[Sun Dec 07 19:35:27.265491 2014] [core:error] [pid 4192:tid 1540] (20024)The given path is misformatted or contained invalid characters: [client 127.0.0.1:61253] AH00127: Cannot map GET /... HTTP/1.1 to file, referer: http://www.test.ru/
+[Sun Dec 07 19:37:00.616490 2014] [core:error] [pid 4192:tid 1556] (20024)The given path is misformatted or contained invalid characters: [client 127.0.0.1:61319] AH00127: Cannot map GET /... HTTP/1.1 to file, referer: http://www.test.ru/
